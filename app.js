@@ -1,21 +1,16 @@
 var express = require('express');
-var mysql = require('mysql');
-
-var db_connection = mysql.createConnection({
-    host     : 'localhost',
-    user     : 'kim',
-    password : 'kimkim',
-    database : 'users'
-});
-
-db_connection.connect( (err, res) =>{
-    if (err) throw err;
-    console.log('DB connection:  \x1b[36m%s\x1b[0m', 'ON');
-});
+const { User } = require('./sequelize')
 
 var app = express();
 
+app.post('/api/users', (req, res) => {
+    console.log('req', req.body);
+    User.create(req.body)
+        .then(user => res.json(user))
+})
+
 app.get('/', (req, res, next) => {
+    console.log('req', req);
     res.status(200).json({
         ok: true,
         msg: 'OK'
