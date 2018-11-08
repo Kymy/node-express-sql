@@ -4,9 +4,12 @@ const { User } = require('./sequelize')
 var app = express();
 
 app.post('/api/users', (req, res) => {
-    console.log('req', req.body);
     User.create(req.body)
         .then(user => res.json(user))
+})
+
+app.get('/api/users', (req, res) => {
+    User.findAll().then(users => res.json(users))
 })
 
 app.get('/', (req, res, next) => {
