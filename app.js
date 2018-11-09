@@ -1,24 +1,20 @@
 var express = require('express');
-const { User } = require('./sequelize')
+var mainRoutes = require('./routes/main');
+var userRoutes = require('./routes/users');
 
 var app = express();
 
-app.post('/api/users', (req, res) => {
-    User.create(req.body)
-        .then(user => res.json(user))
-})
+app.use('/', mainRoutes);
+app.use('/users', userRoutes);
 
-app.get('/api/users', (req, res) => {
-    User.findAll().then(users => res.json(users))
-})
-
-app.get('/', (req, res, next) => {
-    console.log('req', req);
-    res.status(200).json({
-        ok: true,
-        msg: 'OK'
-    });
-});
+// catch 404 and forward to error handler
+app.use((req, res, next) => {
+    var fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+    console.log('URL', fullUrl);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+  });
 
 app.listen(3000, () => {
     console.log('Express server port 3000:  \x1b[36m%s\x1b[0m', 'ONLINE');

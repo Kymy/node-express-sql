@@ -13,8 +13,8 @@ const User = UserModel(sequelize, Sequelize)
 // Force: true will drop the table if it already exists
 sequelize.sync({ force: true })
   .then(() => {
-    console.log(`Database & tables created!`)
-  })
+    console.log(`Database & tables created!`);
+  });
 
 module.exports = {
   User
