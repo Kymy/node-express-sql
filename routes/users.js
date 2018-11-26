@@ -3,15 +3,44 @@ const { User } = require('../sequelize')
 
 var router = express.Router();
 
-router.get('/', (req, res) => {
-    User.findAll()
-        .then(users => res.json(users))
-});
-
-router.post('/', (req, res) => {
-    User.create(req.body)
-        .then(user => res.json(user))
-})
+router.route('/')
+    .get((req, res) => {
+        User.findAll()
+            .then(users => res.json(users))
+    })
+    .post((req, res) => {
+        console.log('REQ.BODY', req.body);
+        const user = req.body.user;
+        if (!user) {
+            return res.status(400).json({ Error: "Missing user" });
+        }
+        if (!user.name) {
+            return res.status(400).json({ Error: "Missing user.name" });
+        }
+        if (!user.lastname) {
+            return res.status(400).json({ Error: "Missing user.lastname" });
+        }
+        if (!user.email) {
+            return res.status(400).json({ Error: "Missing user.email" });
+        }
+        if (!user.age) {
+            return res.status(400).json({ Error: "Missing user.age" });
+        }
+        User.create({
+            name: user.name,
+            lastname: user.lastname,
+            age: user.age,
+            email: user.email
+        })
+        .then(user => {
+            res.status(201);
+            res.json(user);
+        })
+        .catch(err => {
+            console.log("ERR", err);
+            res.status(500).send({ error: 'something blew up' });
+        });
+    });
 
 module.exports = router;
 

@@ -23,7 +23,7 @@ module.exports = (sequelize, type) => {
             allowNull: false,
             validate: { 
                 isEmail: true
-            }
+            },
         }
     })
 }
