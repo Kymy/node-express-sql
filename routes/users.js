@@ -42,6 +42,21 @@ router.route('/')
         });
     });
 
+router.route('/:id')
+    .delete((req, res) => {
+        const id = req.params.id;
+        User.destroy({
+            where: {id: id}
+        })
+        .then(deletedUser => {
+            res.status(200).json(deletedUser);
+        })
+        .catch(err => {
+            console.log('ERR', err);
+            res.status(500).json(err);
+        });
+    });
+
 module.exports = router;
 
 
