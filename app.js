@@ -15,7 +15,10 @@ app.use((req, res, next) => {
     console.log('URL', fullUrl);
     var err = new Error('Not Found');
     err.status = 404;
-    next(err);
+    //next(err); 
+    res.status(404).json({ //¿CUAL ES LA DIFERENCIA ENTRE NEXT Y RES.STATUS.JSON?
+        msg: 'NOT FOUND'
+    });
   });
 
 app.listen(3000, () => {
